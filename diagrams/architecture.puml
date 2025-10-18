@@ -1,0 +1,25 @@
+@startuml
+title School Equipment Lending Portal - Architecture (Containers)
+
+actor User as user
+
+node "User Device" as client {
+  component "React SPA\n(Frontend)" as react
+}
+
+node "Docker Host" as docker {
+  node "frontend container" as fe {
+    component "React Dev Server" as dev
+  }
+  node "backend container" as be {
+    component "Flask API\n(Backend)" as flask
+    database "SQLite DB\n(file)" as db
+  }
+}
+
+user --> react : uses
+react --> dev : runs in
+dev --> flask : HTTP/JSON (REST) via docker network
+flask --> db : SQL (SQLite file)
+
+@enduml

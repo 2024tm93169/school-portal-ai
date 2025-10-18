@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+  backend:
+    build: ./backend
+    container_name: lending_backend
+    ports:
+      - "5000:5000"
+  frontend:
+    build: ./frontend
+    container_name: lending_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+    depends_on:
+      - backend

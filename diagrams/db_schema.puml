@@ -1,0 +1,38 @@
+@startuml
+title School Equipment Lending Portal - DB Schema (ER)
+
+entity "Users" as users {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT
+  email : TEXT <<UNIQUE>>
+  password : TEXT
+  role : TEXT
+  token : TEXT
+}
+
+entity "Equipment" as equipment {
+  * id : INTEGER <<PK>>
+  --
+  name : TEXT
+  category : TEXT
+  cond : TEXT
+  total_quantity : INTEGER
+  available_quantity : INTEGER
+}
+
+entity "Requests" as requests {
+  * id : INTEGER <<PK>>
+  --
+  user_id : INTEGER <<FK>>
+  item_id : INTEGER <<FK>>
+  status : TEXT
+  request_date : TEXT
+  approve_date : TEXT
+  return_date : TEXT
+}
+
+users ||--o{ requests : user_id
+equipment ||--o{ requests : item_id
+
+@enduml
