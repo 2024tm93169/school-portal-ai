@@ -9,7 +9,9 @@ function ManageRequestsPage() {
       const res = await fetch('/api/requests', {
         headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
       });
-        # to ensure we get fresh lists after actions
+
+        // to ensure we get fresh lists after actions
+
       const data = await res.json();
       if (res.ok) setRequests(data);
       else setError(data.error || 'Failed to fetch requests');

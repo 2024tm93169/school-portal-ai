@@ -349,5 +349,15 @@ def analytics():
              'active_loans': active_loans,'pending_requests': pending_requests,'most_requested_item': top_item}
     conn.close(); return jsonify(stats)
 
+
+@app.route('/')
+def home():
+    return "Backend running successfully!"
+
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=False)
