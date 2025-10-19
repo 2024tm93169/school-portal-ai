@@ -44,11 +44,11 @@ def init_db():
         FOREIGN KEY(item_id) REFERENCES equipment(id)
     )""")
     conn.commit()
-    cur.execute("SELECT id FROM users WHERE email=?", ('[REDACTED_EMAIL_ADDRESS_1]',))
+    cur.execute("SELECT id FROM users WHERE email=?", ('2024tm93169@wilp.bits-pilani.ac.in',))
     if cur.fetchone() is None:
         hashed = generate_password_hash('admin')
         cur.execute("INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)",
-                    ('Admin User', '[REDACTED_EMAIL_ADDRESS_1]', hashed, 'admin'))
+                    ('Admin User', '2024tm93169@wilp.bits-pilani.ac.in', hashed, 'admin'))
         conn.commit()
     conn.close()
 
