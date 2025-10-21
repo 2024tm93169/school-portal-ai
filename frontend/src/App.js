@@ -11,27 +11,69 @@ import EquipmentFormPage from './pages/EquipmentFormPage';
 
 const RequireAuth = ({ children }) => {
   const token = localStorage.getItem('token');
-  if (!token) {
-    return <Navigate to="/login" />;
-  }
+
+  if (!token) return <Navigate to="/login" replace />;
   return children;
 };
 
-function App() {
+const role = () => (localStorage.getItem('userRole') || '').trim().toLowerCase();
+
+export default function App() {
+  const userRole = role();
+
+
   return (
     <Router>
       <NavBar />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/" element={<RequireAuth><EquipmentListPage /></RequireAuth>} />
-        <Route path="/requests" element={<RequireAuth>{localStorage.getItem('userRole') === 'admin' ? <ManageRequestsPage /> : <MyRequestsPage />}</RequireAuth>} />
-        <Route path="/analytics" element={<RequireAuth>{localStorage.getItem('userRole') === 'admin' ? <AnalyticsPage /> : <Navigate to='/' />}</RequireAuth>} />
-        <Route path="/equipment/new" element={<RequireAuth><EquipmentFormPage /></RequireAuth>} />
-        <Route path="/equipment/edit/:id" element={<RequireAuth><EquipmentFormPage /></RequireAuth>} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <EquipmentListPage />
+            </RequireAuth>
+          }
+        />
+
+        {/* Key fix: route /requests by role */}
+        <Route
+          path="/requests"
+          element={
+            <RequireAuth>
+              {userRole === 'admin' ? <ManageRequestsPage /> : <MyRequestsPage />}
+            </RequireAuth>
+          }
+        />
+
+        {/* Only admins may view analytics */}
+        <Route
+          path="/analytics"
+          element={
+            <RequireAuth>
+              {userRole === 'admin' ? <AnalyticsPage /> : <Navigate to="/" replace />}
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/equipment/new"
+          element={
+            <RequireAuth>
+              <EquipmentFormPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/equipment/edit/:id"
+          element={
+            <RequireAuth>
+              <EquipmentFormPage />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </Router>
   );
 }
-
-export default App;

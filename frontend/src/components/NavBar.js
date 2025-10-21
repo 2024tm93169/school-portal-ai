@@ -5,7 +5,8 @@ function NavBar() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const userName = localStorage.getItem('userName');
-  const userRole = localStorage.getItem('userRole');
+  const userRole = (localStorage.getItem('userRole') || '').trim().toLowerCase();
+
 
   const handleLogout = () => {
     localStorage.clear();

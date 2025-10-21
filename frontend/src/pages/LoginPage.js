@@ -19,7 +19,7 @@ function LoginPage() {
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        localStorage.setItem('userRole', data.user.role);
+        localStorage.setItem('userRole', (data.user.role || "").toLowerCase());
         localStorage.setItem('userName', data.user.name);
         localStorage.setItem('userEmail', data.user.email);
         localStorage.setItem('userId', data.user.id);

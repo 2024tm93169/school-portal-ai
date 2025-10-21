@@ -5,12 +5,36 @@ services:
     container_name: lending_backend
     ports:
       - "5000:5000"
+
+    # Backend runs Flask on port 5000 inside container
+    environment:
+      - FLASK_ENV=production
+    networks:
+      - lending_net
+
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        # Pass the backend service name as API base for React build
+        REACT_APP_API_BASE: http://backend:5000
+
     container_name: lending_frontend
     ports:
       - "3000:3000"
     environment:
       - HOST=0.0.0.0
+
+      # Optional — forces React to run non-interactively
+      - CI=true
     depends_on:
       - backend
+    networks:
+      - lending_net
+    # Use env file specifically for Docker builds
+    env_file:
+      - ./frontend/.env.docker
+
+networks:
+  lending_net:
+    driver: bridge
